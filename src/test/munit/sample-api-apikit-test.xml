@@ -27,7 +27,12 @@
             </http:request>
         </munit:execution>
         <munit:validation>
-            <munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 200" />
+            <munit-tools:verify-call doc:name="Verify call" doc:id="8f943de0-25d6-450f-814a-4f97e901615b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7739e24d-2662-4ff5-8895-a76f32e71c32" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 200" />
 			<munit-tools:assert-equals doc:name="Assert equals" doc:id="edfc4709-1475-473e-a819-cec1d10c4272" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/put_200_users_{userid}_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
         </munit:validation>
     </munit:test>
@@ -581,4 +586,109 @@
             <munit-tools:assert-equals doc:name="Assert equals" doc:id="9780e0c3-2782-4dfa-a6d3-395792f45484" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/post_500_users_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
         </munit:validation>
     </munit:test>
+	<munit:test name="put:\users\(userId):application\json:sample-api-config-200-application\json-FlowTest1" doc:id="0f729ebe-6619-441b-b4d7-002a43cf7da1" description="Verifying functionality of [put:\users\(userId):application\json:sample-api-config-200-application\json]" >
+		
+		<munit:enable-flow-sources>
+			
+			
+			<munit:enable-flow-source value="sample-api-main" />
+			<munit:enable-flow-source value="put:\users\(userId):application\json:sample-api-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" doc:name="Set Payload" doc:id="c494bdb2-71ea-45a4-b2f5-9606861308dd" />
+			<set-variable value="#['2']" doc:name="userId" doc:id="acc5f5e3-7c13-46b6-a1fa-c7ba71448412" variableName="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="00fc89b9-818a-4cba-ace2-b1d137ef27aa" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="PUT" doc:name="Request" doc:id="5ba825bb-d0a9-4dcd-a0f1-88f6dec76022" config-ref="HTTP_Request_Configuration" path="#['/users/$(vars.userId)']" >
+				<http:headers ><![CDATA[#[{"Accept":"application/json","Content-Type":"application/json"}]]]></http:headers>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1c87e0db-8101-459f-a2eb-a63ddcfad13b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ffd9c08c-3932-412f-9ffd-7c163a1e3c30" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert That Status Code is 200" doc:id="f0f36027-f572-49de-8e24-6e712d8669ba" message="The HTTP Status code is not correct!" expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" />
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="0bdd5606-6abc-428a-b164-552fc6878877" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/put_200_users_{userid}_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="put:\users\(userId):application\json:sample-api-config-200-application\json-FlowTest2" doc:id="234c5a10-dcd1-4849-ae20-53da457baa9a" description="Verifying functionality of [put:\users\(userId):application\json:sample-api-config-200-application\json]" >
+		
+		<munit:enable-flow-sources>
+			
+			
+			<munit:enable-flow-source value="sample-api-main" />
+			<munit:enable-flow-source value="put:\users\(userId):application\json:sample-api-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" doc:name="Set Payload" doc:id="55085f57-a04c-49da-b539-83b193800cf1" />
+			<set-variable value="#['3']" doc:name="userId" doc:id="28159af0-97fe-40ad-b8bd-f41ad1e63382" variableName="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0c3f9702-49ef-489f-83f5-850800508cab" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="PUT" doc:name="Request" doc:id="3dabe0f0-3502-4eae-ba9f-ee41878f2131" config-ref="HTTP_Request_Configuration" path="#['/users/$(vars.userId)']" >
+				<http:headers ><![CDATA[#[{"Accept":"application/json","Content-Type":"application/json"}]]]></http:headers>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="5cc6b894-ac45-4544-84e3-468f3d5877ff" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f3cb9723-cef0-402d-beec-45100c13d4ed" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert That Status Code is 200" doc:id="2b510525-f066-46f3-9a89-e2fbe2c5db80" message="The HTTP Status code is not correct!" expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" />
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="863a3df3-eded-4ff6-83c5-9c9c3d64f84c" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/put_200_users_{userid}_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="put:\users\(userId):application\json:sample-api-config-200-application\json-FlowTest3" doc:id="07531057-6769-4ca1-860a-a1c56759eaea" description="Verifying functionality of [put:\users\(userId):application\json:sample-api-config-200-application\json]" >
+		
+		<munit:enable-flow-sources>
+			
+			
+			<munit:enable-flow-source value="sample-api-main" />
+			<munit:enable-flow-source value="put:\users\(userId):application\json:sample-api-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" doc:name="Set Payload" doc:id="13a73b58-c1f2-452e-93da-9d7f4639c63c" />
+			<set-variable value="#['4']" doc:name="userId" doc:id="2c3ead8d-0ce4-433c-8505-081a97c8425f" variableName="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9c3ca6d7-d071-4708-a3ee-4e36b3e1f164" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="PUT" doc:name="Request" doc:id="97b27893-68da-406f-8992-018891f5ff17" config-ref="HTTP_Request_Configuration" path="#['/users/$(vars.userId)']" >
+				<http:headers ><![CDATA[#[{"Accept":"application/json","Content-Type":"application/json"}]]]></http:headers>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="45435c1d-2779-4672-bf4c-a9debd7a47cb" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b59df58b-b978-447d-bed2-798c233f1afd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert That Status Code is 200" doc:id="a5491b96-899d-4ce6-a02b-c61f6aac75b2" message="The HTTP Status code is not correct!" expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" />
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="0eb554cd-4456-404a-932b-59f67a5426bd" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/put_200_users_{userid}_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
+		</munit:validation>
+	</munit:test>
 </mule>
