@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="put-usersFlow" doc:id="06f7ddb7-3fd6-4676-91ef-49613880ae9f" >
+		<choice doc:name="Choice" doc:id="84552249-8aae-4387-80f2-966537b0a9d9" >
+			<when expression='#["1" == (vars.userId as String)[0]]'>
+				<http:request method="GET" doc:name="Request" doc:id="7739e24d-2662-4ff5-8895-a76f32e71c32" config-ref="HTTP_Request_openlibrary" path="/search/authors.json?q=terry-prattchet"/>
+			</when>
+			<when expression='#["2" == (vars.userId as String)[0]]'>
+				<http:request method="GET" doc:name="Request1" doc:id="ffd9c08c-3932-412f-9ffd-7c163a1e3c30" config-ref="HTTP_Request_openlibrary" path="/search/authors.json?q=brandon-sanderson" />
+			</when>
+			<when expression='#["3" == (vars.userId as String)[0]]'>
+				<http:request method="GET" doc:name="Request" doc:id="f3cb9723-cef0-402d-beec-45100c13d4ed" config-ref="HTTP_Request_openlibrary" path="/search/authors.json?q=santiago-posteguillo" />
+			</when>
+			<when expression='#["4" == (vars.userId as String)[0]]'>
+				<http:request method="GET" doc:name="Request1" doc:id="b59df58b-b978-447d-bed2-798c233f1afd" config-ref="HTTP_Request_openlibrary" path="/search/authors.json?q=neil-gaiman" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="e102e744-b912-4a89-9484-6eb7dedee9dc" />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

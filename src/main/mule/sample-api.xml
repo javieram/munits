@@ -132,7 +132,7 @@ output application/json
                 <ee:set-variable variableName="userId">attributes.uriParams.'userId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <http:request method="GET" doc:name="Request" doc:id="d08489a9-43d1-4854-8298-a12a4629fc51" config-ref="HTTP_Request_configuration" path="/api" />
+		<flow-ref doc:name="put-usersFlow" doc:id="101bb6a1-0074-4019-ab4c-35d52df19e1b" name="put-usersFlow"/>
 		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0

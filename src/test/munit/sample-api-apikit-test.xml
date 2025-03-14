@@ -14,7 +14,7 @@
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
 			<munit-tools:mock-when doc:name="Mock when" doc:id="829086bb-0db0-49cc-8fd1-96be63f5bfd2" processor="http:request" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:payload value="#[{}]" />
@@ -40,8 +40,8 @@
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
 			<munit-tools:mock-when doc:name="Mock when" doc:id="4f460649-1878-416a-a27d-ced9171728c0" processor="http:request">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="HTTP:TIMEOUT" />
@@ -71,7 +71,7 @@
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
 			<munit-tools:mock-when doc:name="Mock when" doc:id="22aa7a6b-e722-4206-b351-d6c201a52eaa" processor="http:request" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="HTTP:FORBIDDEN" />
@@ -101,7 +101,7 @@
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
 			<munit-tools:mock-when doc:name="Mock when" doc:id="51a2e52b-b292-4424-ab3d-010a77dc8506" processor="http:request" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="HTTP:NOT_FOUND" />
@@ -131,7 +131,7 @@
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
 			<munit-tools:mock-when doc:name="Mock when" doc:id="8f1a308a-4c8c-46e6-a2c4-c5552b622af2" processor="http:request" >
 				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_openlibrary" attributeName="config-ref" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:error typeId="EXPRESSION" />
