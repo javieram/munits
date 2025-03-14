@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_openlibrary" doc:name="HTTP Request configuration" doc:id="5a5a4d63-8a1e-499f-a7ee-488d89b7e22a" >
+		<http:request-connection protocol="HTTPS" host="openlibrary.org" port="443" />
+	</http:request-config>
+	<flow name="get-usersFlow" doc:id="909ad627-b5b5-4510-815b-ed5d23c95704" >
+		<http:request method="GET" doc:name="Request" doc:id="0b58d003-8717-4ba9-8093-07a030fadc44" config-ref="HTTP_Request_openlibrary" path="/search.json?q=the+lord+of+the+rings"/>
+		<ee:transform doc:name="do something with the result" doc:id="f38500fa-aa67-4590-a3b3-68e82068658a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request1" doc:id="d82cc714-7815-43e9-9e15-ffe6834381ea" config-ref="HTTP_Request_openlibrary" path="/search.json?q=nation"/>
+		<ee:transform doc:name="do something with the result1" doc:id="75cac632-9f1b-4897-ab27-dd173b2767a0">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request2" doc:id="13947af4-afe6-4f6b-9e22-e203e319ec10" config-ref="HTTP_Request_openlibrary" path="/search.json?q=guards-guards"/>
+		<ee:transform doc:name="do something with the result2" doc:id="bc8e6f92-2e73-4a9f-887f-557311533f9a">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request3" doc:id="9b888c53-de25-4716-bcdb-9c21bd8431c4" config-ref="HTTP_Request_openlibrary" path="/search.json?q=stormlight-archive"/>
+		<ee:transform doc:name="do something with the result3" doc:id="d13531ce-ac48-435a-95ba-0a63b251bdf2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request4" doc:id="d7c0e4fb-8bad-4a70-acc4-27cf5f3533fe" config-ref="HTTP_Request_openlibrary" path="/search.json?q=three-body-problem"/>
+		<ee:transform doc:name="do something with the result4" doc:id="a5d62db3-7bc1-4d1d-9e79-965b9354c381">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request5" doc:id="70ce6948-4b2d-445d-9634-22c1a70fd48e" config-ref="HTTP_Request_openlibrary" path="/search.json?q=the-road"/>
+		<ee:transform doc:name="do something with the result5" doc:id="0438c0ac-f848-4ebb-aee4-75083f6df8a6">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request6" doc:id="1819de92-76db-4de6-a787-154a2e07ec88" config-ref="HTTP_Request_openlibrary" path="/search.json?q=billy-bat"/>
+		<ee:transform doc:name="do something with the result6" doc:id="0da743b1-908b-4d12-960e-547e2c230358" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

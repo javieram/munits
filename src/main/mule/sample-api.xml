@@ -165,7 +165,7 @@ output application/json
 		</error-handler>
     </flow>
     <flow name="get:\users:sample-api-config">
-        <http:request method="GET" doc:name="Request" doc:id="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" config-ref="HTTP_Request_configuration" path="/api"/>
+		<flow-ref doc:name="get-usersFlow" doc:id="65f14b11-f903-48b9-bb50-e0dfcd73f0ab" name="get-usersFlow"/>
 		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
