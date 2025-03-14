@@ -4,7 +4,10 @@
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
     <apikit:config name="sample-api-config" api="resource::1b88a884-b002-4425-bfba-7246f6d3299d:sample-api:1.0.0:raml:zip:sample-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <flow name="sample-api-main">
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="c6f5bb6c-83bb-46f5-a70a-6d2f7d66cfb1" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="sample-api-main">
         <http:listener config-ref="sample-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -129,7 +132,8 @@ output application/json
                 <ee:set-variable variableName="userId">attributes.uriParams.'userId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
+        <http:request method="GET" doc:name="Request" doc:id="d08489a9-43d1-4854-8298-a12a4629fc51" config-ref="HTTP_Request_configuration" path="/api" />
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -141,9 +145,28 @@ output application/json
 } as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+        <error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="efc56e3b-d353-4478-a222-24c962e2d965" type="HTTP:FORBIDDEN" >
+				<set-variable value="403" doc:name="httpStatus = 403" doc:id="53c355a5-b675-4057-8233-dbb0f450c126" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"Forbidden","message":"You do not have permission to update this user."}]' doc:name="Set Payload" doc:id="68b512b2-eec8-4ab2-976f-b8e0db630a4a" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="aa62bb9d-2501-4d68-9a81-1d5fa8c8f92c" type="HTTP:NOT_FOUND">
+				<set-variable value="404" doc:name="httpStatus = 404" doc:id="07959b8a-3d57-4c16-846b-f7e48caf7199" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"NotFound","message":"User with ID 1 was not found."}]' doc:name="Set Payload" doc:id="fc480aa7-df0c-4c01-aaed-9c47c5a60869" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cfaef1f9-4fbc-43be-8778-61506c77fb3e" type="HTTP:BAD_GATEWAY, HTTP:BAD_REQUEST, HTTP:CLIENT_SECURITY, HTTP:CONNECTIVITY, HTTP:INTERNAL_SERVER_ERROR, HTTP:METHOD_NOT_ALLOWED, HTTP:NOT_ACCEPTABLE, HTTP:PARSING, HTTP:RETRY_EXHAUSTED, HTTP:SECURITY, HTTP:SERVICE_UNAVAILABLE, HTTP:TIMEOUT, HTTP:TOO_MANY_REQUESTS, HTTP:UNAUTHORIZED, HTTP:UNSUPPORTED_MEDIA_TYPE">
+				<set-variable value="400" doc:name="httpStatus = 400" doc:id="bf3fd886-1589-482f-aa2a-d3281eef49ae" variableName="httpStatus" />
+				<set-payload value="#[output application/json --- {&quot;error&quot;:&quot;InvalidInput&quot;,&quot;message&quot;:&quot;The 'email' field is required.&quot;}]" doc:name="Set Payload" doc:id="624abb3d-f648-4f37-990f-799fe6b5459c" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="64739cef-de60-4903-be09-32eef504d58a" type="ANY">
+				<set-variable value="500" doc:name="httpStatus = 500" doc:id="9a108b2f-42e2-48b6-94bf-88375e20c33f" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"ServerError","message":"An unexpected error occurred. Please try again later."}]' doc:name="Set Payload" doc:id="6a153cff-7016-436d-bacb-bd8fd09d5f7a" />
+			</on-error-continue>
+		</error-handler>
     </flow>
     <flow name="get:\users:sample-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:request method="GET" doc:name="Request" doc:id="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" config-ref="HTTP_Request_configuration" path="/api"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -162,6 +185,24 @@ output application/json
 ] as Array {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="66980953-17b2-40ea-8607-78c14fcb062d" type="HTTP:FORBIDDEN" >
+				<set-variable value="403" doc:name="httpStatus = 403" doc:id="0e3742d1-26d2-4ad5-8654-80c650a8d4c0" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"Forbidden","message":"You do not have permission to access this resource."}]' doc:name="Set Payload" doc:id="5f4aef62-0555-4ab0-b109-05d018c4ee54" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fa2d06e7-0fe6-4be9-924f-9a0a70561557" type="HTTP:NOT_FOUND">
+				<set-variable value="404" doc:name="httpStatus = 404" doc:id="6a9d121c-6830-456d-b064-2ab4e50495d8" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"NotFound","message":"The requested resource was not found."}]' doc:name="Set Payload" doc:id="4aec5571-76d6-41e1-a417-b00917d99bcc" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f70e83af-a0ee-4b06-8471-feb7a4ba7cf5" type="HTTP:BAD_GATEWAY, HTTP:BAD_REQUEST, HTTP:CLIENT_SECURITY, HTTP:CONNECTIVITY, HTTP:INTERNAL_SERVER_ERROR, HTTP:METHOD_NOT_ALLOWED, HTTP:NOT_ACCEPTABLE, HTTP:PARSING, HTTP:RETRY_EXHAUSTED, HTTP:SECURITY, HTTP:SERVICE_UNAVAILABLE, HTTP:TIMEOUT, HTTP:TOO_MANY_REQUESTS, HTTP:UNAUTHORIZED, HTTP:UNSUPPORTED_MEDIA_TYPE">
+				<set-variable value="400" doc:name="httpStatus = 400" doc:id="5e5d91e4-ee40-4034-837b-3e8caea63a80" variableName="httpStatus" />
+				<set-payload value="#[output application/json --- {&quot;error&quot;:&quot;InvalidParameter&quot;,&quot;message&quot;:&quot;The 'limit' parameter must be a positive integer.&quot;}]" doc:name="Set Payload" doc:id="9104fb00-7ce0-410e-8a6f-9f00ffd63495" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cd1b4fe0-5a77-4b42-844f-7ce4451409e9" type="ANY">
+				<set-variable value="500" doc:name="httpStatus = 500" doc:id="9db6fa8e-f2ef-4be8-9f16-85139ced6d2f" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"ServerError","message":"An unexpected error occurred. Please try again later."}]' doc:name="Set Payload" doc:id="5527d703-784c-4f87-bb03-00d380932b29" />
+			</on-error-continue>
+		</error-handler>
     </flow>
     <flow name="get:\users\(userId):sample-api-config">
         <ee:transform doc:name="Transform Message">
@@ -169,7 +210,8 @@ output application/json
                 <ee:set-variable variableName="userId">attributes.uriParams.'userId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <ee:transform doc:name="Transform Message">
+        <http:request method="GET" doc:name="Request" doc:id="b7956162-ff42-48b4-a514-c2281a30226b" config-ref="HTTP_Request_configuration" path="/api" />
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -181,9 +223,28 @@ output application/json
 } as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="bffb65a5-1ff5-4928-aad7-e3aaac087eff" type="HTTP:FORBIDDEN" >
+				<set-variable value="403" doc:name="httpStatus = 403" doc:id="6507d232-b71e-4a51-a2fc-5ccbae8691ab" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"Forbidden","message":"You do not have permission to access this user."}]' doc:name="Set Payload" doc:id="0335c1ae-205b-4ac9-8187-e727046cf144" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7e8d33fb-8845-4032-84b0-3a947edef31a" type="HTTP:NOT_FOUND">
+				<set-variable value="404" doc:name="httpStatus = 404" doc:id="5ca07cc4-8b1e-4b97-be65-7a0cb4011309" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"NotFound","message":"User with ID 1 was not found."}]' doc:name="Set Payload" doc:id="93d1cad6-20ee-4b3d-b014-62393065ef6f" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ded567e3-113c-4f57-aaf3-ef93a25af91b" type="HTTP:BAD_GATEWAY, HTTP:BAD_REQUEST, HTTP:CLIENT_SECURITY, HTTP:CONNECTIVITY, HTTP:INTERNAL_SERVER_ERROR, HTTP:METHOD_NOT_ALLOWED, HTTP:NOT_ACCEPTABLE, HTTP:PARSING, HTTP:RETRY_EXHAUSTED, HTTP:SECURITY, HTTP:SERVICE_UNAVAILABLE, HTTP:TIMEOUT, HTTP:TOO_MANY_REQUESTS, HTTP:UNAUTHORIZED, HTTP:UNSUPPORTED_MEDIA_TYPE">
+				<set-variable value="400" doc:name="httpStatus = 400" doc:id="536c1ffe-7396-4461-a47d-1cdd27df64f7" variableName="httpStatus" />
+				<set-payload value="#[output application/json --- {&quot;error&quot;:&quot;InvalidParameter&quot;,&quot;message&quot;:&quot;The 'userId' parameter must be a positive integer.&quot;}]" doc:name="Set Payload" doc:id="789803ac-6205-42aa-9d45-74ec2bb4e86d" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="42936d48-0302-4eae-aa4a-3814b841f6f1" type="ANY">
+				<set-variable value="500" doc:name="httpStatus = 500" doc:id="85be6351-46de-42e2-818a-04024f013cca" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"ServerError","message":"An unexpected error occurred. Please try again later."}]' doc:name="Set Payload" doc:id="c571d9fc-e74d-4bf8-9532-fe22096895ce" />
+			</on-error-continue>
+		</error-handler>
     </flow>
     <flow name="post:\users:application\json:sample-api-config">
-        <ee:transform doc:name="Transform Message">
+        <http:request method="GET" doc:name="Request" doc:id="782cdd95-2517-4263-af5f-0d840a0bc14f" config-ref="HTTP_Request_configuration" path="/api" />
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -195,5 +256,23 @@ output application/json
 } as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+        <error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e0882886-e6cb-4066-90e9-037f9e967bb1" type="HTTP:FORBIDDEN" >
+				<set-variable value="403" doc:name="httpStatus = 403" doc:id="62d9e86d-ef95-4965-bcff-19c860b4de13" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"Forbidden","message":"You do not have permission to create a user."}]' doc:name="Set Payload" doc:id="a9332bd1-1236-4b62-b722-0b569fe5b373" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9f184dde-440c-489b-92fa-82a24b26faf1" type="HTTP:NOT_FOUND">
+				<set-variable value="404" doc:name="httpStatus = 404" doc:id="166c56dd-920c-447c-acf2-173b9deb2c15" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"NotFound","message":"The requested resource was not found."}]' doc:name="Set Payload" doc:id="ec982d1a-960b-4cf5-b7d6-81af1734355a" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="428e8ff2-4f11-4fc3-9032-888d4c6bfaa2" type="HTTP:BAD_GATEWAY, HTTP:BAD_REQUEST, HTTP:CLIENT_SECURITY, HTTP:CONNECTIVITY, HTTP:INTERNAL_SERVER_ERROR, HTTP:METHOD_NOT_ALLOWED, HTTP:NOT_ACCEPTABLE, HTTP:PARSING, HTTP:RETRY_EXHAUSTED, HTTP:SECURITY, HTTP:SERVICE_UNAVAILABLE, HTTP:TIMEOUT, HTTP:TOO_MANY_REQUESTS, HTTP:UNAUTHORIZED, HTTP:UNSUPPORTED_MEDIA_TYPE">
+				<set-variable value="400" doc:name="httpStatus = 400" doc:id="81b2c000-11b2-406d-bb99-0cad229aa188" variableName="httpStatus" />
+				<set-payload value="#[output application/json --- {&quot;error&quot;:&quot;InvalidInput&quot;,&quot;message&quot;:&quot;The 'email' field is required.&quot;}]" doc:name="Set Payload" doc:id="6084e9e9-61b8-4116-83f3-aeac38e10e73" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cdac26af-8993-4343-a51a-76b3c73deb94" type="ANY">
+				<set-variable value="500" doc:name="httpStatus = 500" doc:id="c58c31ef-da8a-4e17-aa8d-e852b3617c78" variableName="httpStatus" />
+				<set-payload value='#[output application/json --- {"error":"ServerError","message":"An unexpected error occurred. Please try again later."}]' doc:name="Set Payload" doc:id="6d65d271-64da-4aa0-b493-b1944261c4de" />
+			</on-error-continue>
+		</error-handler>
     </flow>
 </mule>

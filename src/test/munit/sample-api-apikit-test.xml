@@ -12,6 +12,14 @@
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="829086bb-0db0-49cc-8fd1-96be63f5bfd2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="PUT" path="#['/users/$(vars.userId)']">
@@ -23,7 +31,7 @@
 			<munit-tools:assert-equals doc:name="Assert equals" doc:id="edfc4709-1475-473e-a819-cec1d10c4272" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/put_200_users_{userid}_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
         </munit:validation>
     </munit:test>
-    <munit:test name="put:\users\(userId):application\json:sample-api-config-400-application\json-FlowTest" description="Verifying functionality of [put:\users\(userId):application\json:sample-api-config-400-application\json]">
+	<munit:test name="put:\users\(userId):application\json:sample-api-config-400-application\json-FlowTest" description="Verifying functionality of [put:\users\(userId):application\json:sample-api-config-400-application\json]">
         <munit:enable-flow-sources>
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="put:\users\(userId):application\json:sample-api-config" />
@@ -31,6 +39,14 @@
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4f460649-1878-416a-a27d-ced9171728c0" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="PUT" path="#['/users/$(vars.userId)']">
@@ -53,6 +69,14 @@
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="22aa7a6b-e722-4206-b351-d6c201a52eaa" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:FORBIDDEN" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="PUT" path="#['/users/$(vars.userId)']">
@@ -75,6 +99,14 @@
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="51a2e52b-b292-4424-ab3d-010a77dc8506" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="PUT" path="#['/users/$(vars.userId)']">
@@ -97,6 +129,14 @@
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/put_users_{userid}_application_json.json')]" />
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="8f1a308a-4c8c-46e6-a2c4-c5552b622af2" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d08489a9-43d1-4854-8298-a12a4629fc51" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="EXPRESSION" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="PUT" path="#['/users/$(vars.userId)']">
@@ -116,7 +156,17 @@
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="get:\users:sample-api-config" />
         </munit:enable-flow-sources>
-        <munit:execution>
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="bb81b0d8-41fc-4039-83e2-1e6ce5d29e44" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/users">
                 <http:headers>#[{"Accept":"application/json"}]</http:headers>
                 <http:query-params>#[{"offset":"0","limit":"10"}]</http:query-params>
@@ -132,7 +182,17 @@
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="get:\users:sample-api-config" />
         </munit:enable-flow-sources>
-        <munit:execution>
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5a5a8e9d-376f-4d1d-9deb-5f4e4288f21d" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/users">
                 <http:headers>#[{"Accept":"application/json"}]</http:headers>
                 <http:query-params>#[{"offset":"0","limit":"10"}]</http:query-params>
@@ -143,15 +203,25 @@
         </munit:execution>
         <munit:validation>
             <munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(400)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 400" />
-            <munit-tools:assert-equals doc:name="Assert equals" doc:id="d6655ba8-649c-4a69-af2c-3b8c9eb479d2" actual="#[payload]" expected="#[readUrl('classpath://get_400_users_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="d6655ba8-649c-4a69-af2c-3b8c9eb479d2" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/get_400_users_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
         </munit:validation>
     </munit:test>
-    <munit:test name="get:\users:sample-api-config-403-application\json-FlowTest" description="Verifying functionality of [get:\users:sample-api-config-403-application\json]">
+    <munit:test name="get:\users:sample-api-config-403-application\json-FlowTest" description="Verifying functionality of [get:\users:sample-api-config-403-application\json]" timeOut="12000000">
         <munit:enable-flow-sources>
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="get:\users:sample-api-config" />
         </munit:enable-flow-sources>
-        <munit:execution>
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e26021a0-cfdc-4915-98ae-68b7a117da74" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:FORBIDDEN" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/users">
                 <http:headers>#[{"Accept":"application/json"}]</http:headers>
                 <http:query-params>#[{"offset":"0","limit":"10"}]</http:query-params>
@@ -170,7 +240,17 @@
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="get:\users:sample-api-config" />
         </munit:enable-flow-sources>
-        <munit:execution>
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b1a040c2-ec6b-4755-b96b-ddcc92005ed9" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/users">
                 <http:headers>#[{"Accept":"application/json"}]</http:headers>
                 <http:query-params>#[{"offset":"0","limit":"10"}]</http:query-params>
@@ -189,7 +269,17 @@
             <munit:enable-flow-source value="sample-api-main" />
             <munit:enable-flow-source value="get:\users:sample-api-config" />
         </munit:enable-flow-sources>
-        <munit:execution>
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f2c18c5a-5aeb-4c01-b91a-fe1a4f6faa5b" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c627b2cc-7ff8-4e2f-b8c3-19c6b2871c34" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="EXPRESSION" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/users">
                 <http:headers>#[{"Accept":"application/json"}]</http:headers>
                 <http:query-params>#[{"offset":"0","limit":"10"}]</http:query-params>
@@ -210,6 +300,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="36d06e96-2ae1-46bc-ab24-7900dafc5810" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7956162-ff42-48b4-a514-c2281a30226b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="#['/users/$(vars.userId)']">
@@ -228,6 +326,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="1c17ddff-9509-4076-9fc5-d81cd70bf789" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7956162-ff42-48b4-a514-c2281a30226b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="#['/users/$(vars.userId)']">
@@ -249,6 +355,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c087cef3-7819-46fa-9c61-ed0e7210de11" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7956162-ff42-48b4-a514-c2281a30226b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:FORBIDDEN" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="#['/users/$(vars.userId)']">
@@ -270,6 +384,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2c542cf0-e158-4794-9b79-d6e277b4bdf5" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7956162-ff42-48b4-a514-c2281a30226b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="#['/users/$(vars.userId)']">
@@ -291,6 +413,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-variable variableName="userId" value="#['1']" doc:name="userId" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="dcd46c8f-69ee-4dfc-ae5c-ea8c5a202c2b" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b7956162-ff42-48b4-a514-c2281a30226b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="EXPRESSION" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="GET" path="#['/users/$(vars.userId)']">
@@ -312,6 +442,14 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/post_users_application_json.json')]" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b23608a4-127f-4cf7-9a7e-0338d3b03478" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="782cdd95-2517-4263-af5f-0d840a0bc14f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="POST" path="/users">
@@ -320,7 +458,7 @@
         </munit:execution>
         <munit:validation>
             <munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(201)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 201" />
-            <munit-tools:assert-equals doc:name="Assert equals" doc:id="8ae1e82b-17ba-4615-8da2-b44d54590095" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/get_200_users_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="8ae1e82b-17ba-4615-8da2-b44d54590095" actual="#[payload]" expected="#[readUrl('classpath://scaffolder/response/post_201_users_application_json.json', &quot;application/json&quot;)]" message="The response payload is not correct!" />
         </munit:validation>
     </munit:test>
     <munit:test name="post:\users:application\json:sample-api-config-400-application\json-FlowTest" description="Verifying functionality of [post:\users:application\json:sample-api-config-400-application\json]">
@@ -330,6 +468,15 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/post_users_application_json.json')]" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="88b334df-47d5-485f-9b78-e6c5321334e5" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="782cdd95-2517-4263-af5f-0d840a0bc14f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:error typeId="HTTP:TIMEOUT" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="POST" path="/users">
@@ -351,6 +498,15 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/post_users_application_json.json')]" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7e5c4df1-2e57-4716-8d7b-af94f033979a" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="782cdd95-2517-4263-af5f-0d840a0bc14f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:error typeId="HTTP:FORBIDDEN" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="POST" path="/users">
@@ -372,6 +528,15 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/post_users_application_json.json')]" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="41028ff1-4b9b-4340-b57b-0b981187c52d" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="782cdd95-2517-4263-af5f-0d840a0bc14f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:error typeId="HTTP:NOT_FOUND" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="POST" path="/users">
@@ -393,6 +558,15 @@
         </munit:enable-flow-sources>
         <munit:behavior>
             <set-payload value="#[MunitTools::getResourceAsString('scaffolder/request/post_users_application_json.json')]" />
+			<munit-tools:mock-when doc:name="Mock when" doc:id="752a5a11-5bac-4079-8a99-a3e1583babd3" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="782cdd95-2517-4263-af5f-0d840a0bc14f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[{}]" />
+					<munit-tools:error typeId="EXPRESSION" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
             <http:request config-ref="HTTP_Request_Configuration" method="POST" path="/users">
